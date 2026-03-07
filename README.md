@@ -48,17 +48,25 @@
    ```bash
    npm install
    ```
-2. Запустіть сервер розробки:
+2. Запустіть сервер (обов'язково через скрипт `start.sh`):
    ```bash
-   npm run dev
+   ./start.sh
    ```
-3. Відкрийте [http://localhost:3000](http://localhost:3000)
+3. Відкрийте [http://localhost:1999](http://localhost:1999)
 
 ### 🏷 Версіонування проекту
 Ми дотримуємося семантичного версіонування (Semantic Versioning):
-- **Глобальні оновлення (Major):** `4.0.0` (Суттєві архітектурні зміни, перехід на новий глобальний Roadmap).
-- **Великі фічі (Minor):** `3.1.0`, `3.2.0` (Реліз нових функцій з Roadmap).
-- **Малі допрацювання (Patch):** `3.1.1`, `3.1.2` (Виправлення багів, дрібні покращення).
+- **Глобальні оновлення (Major):** `2.0.0` (Суттєві архітектурні зміни, перехід на новий глобальний Roadmap).
+- **Великі фічі (Minor):** `1.1.0`, `1.2.0` (Реліз нових функцій з Roadmap).
+- **Малі допрацювання (Patch):** `1.1.1`, `1.1.2` (Виправлення багів, дрібні покращення).
+
+### 📜 Історія змін (Changelog)
+
+## 2026-03-07 v1.2.0 - Інтерактивні послуги та профілі
+- Додано: сторінка налаштувань (`/settings`) та профіль клієнта.
+- Додано: сторінка замовлень (`/orders`) з трекінгом (нові, в процесі, виконані).
+- Додано: інтерактивні флоу для Заміни масла і Заміни гальм.
+- Оновлено: `start.sh` з правилами збереження коду та документування.
 
 ---
 
@@ -108,14 +116,22 @@ This is a premium web application (Mobile-First PWA) for booking on-site auto re
    ```bash
    npm install
    ```
-2. Run development server:
+2. Run the server (must use `start.sh` script):
    ```bash
-   npm run dev
+   ./start.sh
    ```
-3. Open [http://localhost:3000](http://localhost:3000)
+3. Open [http://localhost:1999](http://localhost:1999)
 
 ### 🏷 Versioning Strategy
 We follow Semantic Versioning rules:
-- **Global Updates (Major):** `4.0.0` (Significant architectural overhauls, advancing to a new global Roadmap).
-- **Large Features (Minor):** `3.1.0`, `3.2.0` (Release of new features from the current Roadmap).
-- **Small Fixes (Patch):** `3.1.1`, `3.1.2` (Bug fixes, minor tweaks).
+- **Global Updates (Major):** `2.0.0` (Significant architectural overhauls, advancing to a new global Roadmap).
+- **Large Features (Minor):** `1.1.0`, `1.2.0` (Release of new features from the current Roadmap).
+- **Small Fixes (Patch):** `1.1.1`, `1.1.2` (Bug fixes, minor tweaks).
+
+### 📜 Changelog
+
+## 2026-03-07 v1.2.0 - Interactive Services & Profiles
+- Added: Settings page (`/settings`) and client profile.
+- Added: Orders page (`/orders`) with tracking (new, progress, completed).
+- Added: Interactive service flows for Oil Change and Brake Change.
+- Updated: `start.sh` script with code preservation and documentation rules.
