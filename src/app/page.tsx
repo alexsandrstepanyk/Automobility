@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Car, Droplets, Disc, Settings, ChevronRight, MapPin, Calendar, Globe } from 'lucide-react';
+import { Car, Droplets, Disc, Settings, ChevronRight, MapPin, Calendar, Globe, Activity } from 'lucide-react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -9,10 +9,10 @@ export default function Home() {
   const { t, language } = useLanguage();
 
   const services = [
-    { name: t('oilChange'), icon: <Droplets className="w-6 h-6" />, desc: language === 'uk' ? 'Швидко та чисто' : 'Fast and clean' },
-    { name: t('wheelChange'), icon: <Disc className="w-6 h-6" />, desc: language === 'uk' ? 'Сезон чи ремонт' : 'Season or repair' },
-    { name: t('brakeChange'), icon: <Settings className="w-6 h-6" />, desc: language === 'uk' ? 'Твоя безпека' : 'Your safety' },
-    { name: t('detailing'), icon: <Car className="w-6 h-6" />, desc: language === 'uk' ? 'Як з салону' : 'Like new' },
+    { name: t('oilChange'), icon: <Droplets className="w-6 h-6" />, desc: t('fastClean') },
+    { name: t('wheelChange'), icon: <Disc className="w-6 h-6" />, desc: t('seasonRepair') },
+    { name: t('brakeChange'), icon: <Settings className="w-6 h-6" />, desc: t('yourSafety') },
+    { name: t('detailing'), icon: <Car className="w-6 h-6" />, desc: t('likeNew') },
   ];
 
   return (
@@ -65,6 +65,31 @@ export default function Home() {
           ))}
         </div>
 
+        {/* Special Highlighted Service */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="premium-card"
+          style={{
+            marginTop: '16px',
+            background: 'var(--accent-glow)',
+            borderColor: 'var(--accent)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '16px 20px'
+          }}
+        >
+          <div style={{ background: 'var(--accent)', padding: '12px', borderRadius: '12px' }}>
+            <Activity className="text-white w-6 h-6" />
+          </div>
+          <div>
+            <div style={{ fontWeight: '700', fontSize: '18px', color: 'white' }}>{t('mobileDiagnostics')}</div>
+            <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.8)', marginTop: '4px' }}>{t('mobileDiagnosticsDesc')}</div>
+          </div>
+        </motion.div>
+
         {/* Features Info */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -74,11 +99,11 @@ export default function Home() {
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
             <MapPin className="text-blue-400" />
-            <span>{language === 'uk' ? 'Вкажіть геолокацію авто' : 'Specify car location'}</span>
+            <span>{t('specifyLocation')}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <Calendar className="text-green-400" />
-            <span>{language === 'uk' ? 'Оберіть зручний час' : 'Choose a convenient time'}</span>
+            <span>{t('chooseTime')}</span>
           </div>
         </motion.div>
       </div>
@@ -96,7 +121,7 @@ export default function Home() {
 
         <div style={{ marginTop: '32px', borderTop: '1px solid var(--border)', paddingTop: '20px', textAlign: 'center' }}>
           <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '12px' }}>
-            {language === 'uk' ? 'Працюєте з нами?' : 'Working with us?'}
+            {t('workingWithUs')}
           </p>
           <Link href="/mechanic/login">
             <button className="glass" style={{ width: '100%', padding: '12px', borderRadius: '12px', fontSize: '14px', border: '1px solid var(--border)' }}>

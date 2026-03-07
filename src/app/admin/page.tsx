@@ -125,10 +125,10 @@ export default function AdminDashboard() {
                 <div style={{ display: 'flex', gap: '12px' }}>
                     <div className="premium-card" style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <Activity className="text-green-500 w-4 h-4" />
-                        <span style={{ fontSize: '14px' }}>Live: 24 {language === 'uk' ? 'замовлення' : 'orders'}</span>
+                        <span style={{ fontSize: '14px' }}>Live: 24 {t('ordersCount')}</span>
                     </div>
                     <button className="btn-primary" style={{ padding: '8px 16px', fontSize: '14px' }}>
-                        <Map className="w-4 h-4" /> {language === 'uk' ? 'Карта FLEET' : 'FLEET Map'}
+                        <Map className="w-4 h-4" /> {t('fleetMap')}
                     </button>
                 </div>
             </header>
@@ -304,7 +304,7 @@ export default function AdminDashboard() {
                                     {(verifSubTab === 'mechanics' ? pendingMechanics : pendingUsers).length === 0 && (
                                         <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-secondary)' }}>
                                             <ShieldCheck className="w-12 h-12 opacity-20 mx-auto mb-4" />
-                                            <p>{language === 'uk' ? 'Всі заявки оброблені' : 'All applications processed'}</p>
+                                            <p>{t('allProcessed')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -315,7 +315,7 @@ export default function AdminDashboard() {
 
                 {/* Fleet Sidebar */}
                 <section className="premium-card" style={{ height: 'fit-content' }}>
-                    <h3 style={{ marginBottom: '20px', fontSize: '16px' }}>{language === 'uk' ? 'Доступні майстри' : 'Available Fleet'}</h3>
+                    <h3 style={{ marginBottom: '20px', fontSize: '16px' }}>{t('availableFleet')}</h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                         {mechanics.map(m => (
                             <div key={m.id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px' }}>
@@ -325,7 +325,7 @@ export default function AdminDashboard() {
                                 <div style={{ flex: 1 }}>
                                     <div style={{ fontSize: '14px', fontWeight: '600' }}>{m.name}</div>
                                     <div style={{ fontSize: '11px', color: m.status === 'busy' ? '#eab308' : '#22c55e' }}>
-                                        {m.status === 'busy' ? (language === 'uk' ? 'Зайнятий' : 'Busy') : (language === 'uk' ? 'Вільний' : 'Available')}
+                                        {m.status === 'busy' ? t('mechanicBusy') : t('mechanicAvailable')}
                                     </div>
                                 </div>
                             </div>

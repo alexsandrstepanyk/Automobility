@@ -91,7 +91,7 @@ export default function Register() {
                             exit={{ opacity: 0, x: -20 }}
                         >
                             <h2 style={{ fontSize: '24px', marginBottom: '8px' }}>{t('whoAreYou')}</h2>
-                            <p style={{ color: 'var(--text-secondary)', marginBottom: '32px' }}>{language === 'uk' ? 'Ми повинні знати з ким маємо справу' : 'We need to know who we are dealing with'}</p>
+                            <p style={{ color: 'var(--text-secondary)', marginBottom: '32px' }}>{t('dealWithWho')}</p>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                                 <div style={{ position: 'relative' }}>
@@ -180,7 +180,7 @@ export default function Register() {
                             exit={{ opacity: 0, x: -20 }}
                         >
                             <h2 style={{ fontSize: '24px', marginBottom: '8px' }}>{t('carDetails')}</h2>
-                            <p style={{ color: 'var(--text-secondary)', marginBottom: '32px' }}>{language === 'uk' ? 'Ці дані потрібні для підбору запчастин' : 'This data is needed for parts selection'}</p>
+                            <p style={{ color: 'var(--text-secondary)', marginBottom: '32px' }}>{t('dataForParts')}</p>
 
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                                 <div style={{ position: 'relative' }}>

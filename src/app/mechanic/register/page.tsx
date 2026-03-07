@@ -53,6 +53,7 @@ export default function MechanicRegister() {
         { id: 'detailing', label: t('detailing') },
         { id: 'electronics', label: t('electronics') },
         { id: 'engineRepair', label: t('engineRepair') },
+        { id: 'mobileDiagnostics', label: t('mobileDiagnostics') },
     ];
 
     return (

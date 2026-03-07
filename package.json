@@ -3,21 +3,22 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 1999",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 1999",
     "lint": "eslint"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
     "firebase": "^12.9.0",
-    "framer-motion": "^12.34.2",
+    "framer-motion": "^12.35.0",
     "lucide-react": "^0.574.0",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

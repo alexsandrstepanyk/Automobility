@@ -5,9 +5,10 @@ import {
     Clock, CheckCircle2,
     MapPin,
     LogOut, Star,
-    Camera,
+    Camera, Settings,
     Play, ClipboardList
 } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
@@ -77,7 +78,7 @@ export default function MechanicDashboard() {
             setMechanicData({
                 name: 'Віталій С.',
                 city: 'kyiv',
-                skills: [t('oilChange'), t('brakeChange'), t('wheelChange')],
+                skills: [t('oilChange'), t('brakeChange'), t('wheelChange'), t('mobileDiagnostics')],
                 rating: 4.9,
                 reviews: [
                     { id: 1, user: 'Олександр', comment: 'Швидко та якісно!', rating: 5, date: '12.02.2026' },
@@ -136,9 +137,11 @@ export default function MechanicDashboard() {
                             <span>{t(mechanicData?.city || '')}</span>
                         </div>
                     </div>
-                    <button onClick={() => { localStorage.removeItem('mechanicAuth'); router.push('/mechanic/login'); }} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)' }}>
-                        <LogOut className="w-6 h-6" />
-                    </button>
+                    <Link href="/settings">
+                        <button style={{ background: 'var(--surface-hover)', border: 'none', padding: '10px', borderRadius: '50%', color: 'white', cursor: 'pointer' }}>
+                            <Settings className="w-5 h-5" />
+                        </button>
+                    </Link>
                 </div>
             </header>
 
