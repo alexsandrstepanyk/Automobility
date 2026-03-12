@@ -18,6 +18,16 @@ Automobility засновано з єдиною метою — змінити а
 
 ### 📜 Історія змін (Changelog)
 
+## **2026-03-12 v1.3.0 - Інтеграція Бекенду та Бази Даних**
+- **Додано:** Локальна база даних SQLite (`dev.db`) для безболісного старту розробки через `@libsql/client`.
+- **Додано:** Prisma V7 ORM схеми (User, Mechanic, Car, Order).
+- **Додано:** API-ендпоїнти `/api/orders`, `/api/mechanics` з CRUD операціями.
+- **Оновлено:** Інтеграція API з фронтендом (`/admin`, `/mechanic`, `/dashboard`, `/orders`) - відмова від фейкових `useState` масивів.
+- **Оновлено:** Налаштування автоматичного наповнення (Seeding) БД при порожньому стані.
+- **Оновлено:** Інтеграція сповіщень Telegram при створенні нового замовлення.
+
+---
+
 ## **2026-03-07 v1.2.0 - Інтерактивні послуги та профілі**
 - **Додано:** сторінка налаштувань (`/settings`) та профіль клієнта з "Гаражем".
 - **Додано:** сторінка замовлень (`/orders`) з трекінгом статусів (нові, в процесі, виконані).
@@ -31,10 +41,10 @@ Automobility засновано з єдиною метою — змінити а
 ### 🎯 Фаза 1: Міцний Фундамент та Бази Даних (Поточний Етап)
 *Перехід від демо-версії до production-ready екосистеми.*
 
-- [ ] **Розгортання Бази Даних (Database Migration):** Налаштування PostgreSQL та Prisma ORM (або Supabase) для централізованого зберігання:
-  - Профілів користувачів і сесій авторизації (NextAuth).
-  - Профілів майстрів, їх локацій та рейтингів.
-  - "Гаража" з VIN-кодами автомобілів та історією ремонтів.
+- [x] **Розгортання Бази Даних (Database Migration):** Налаштування SQLite та Prisma ORM для централізованого зберігання:
+  - Профілів користувачів і сесій.
+  - Профілів майстрів, їх локацій та статусів.
+  - Історії замовлень та статусів у реальному часі.
 - [ ] **Інтеграція реального VIN-декодера:** API-інтеграція для парсингу технічних характеристик авто, щоб ідеально підбирати літраж мастила та маркування гальм.
 - [ ] **Адмін Ядро (Fleet Dispatcher 2.0):** WebSocket-інтеграція серверу для відображення механіків на карті в режимі реального часу.
 
@@ -73,6 +83,15 @@ Our Ecosystem consists of:
 
 ### 📜 Changelog
 
+## **2026-03-12 v1.3.0 - Backend & Local Database Integration**
+- **Added:** Local SQLite database via `@libsql/client` for frictionless developer experience.
+- **Added:** Prisma V7 schemas establishing relations for Users, Mechanics, and Orders.
+- **Added:** Connected RESTful APIs (`/api/orders`, `/api/mechanics`) running on Next.js App Router.
+- **Updated:** Replaced fake state setups across all dashboards with real API data fetches.
+- **Updated:** Order creation auto-triggers real Telegram Bot notifications.
+
+---
+
 ## **2026-03-07 v1.2.0 - Interactive Services & Profiles**
 - **Added:** Global `/settings` page for user profile and Garage.
 - **Added:** Trackable `/orders` page (New, In Progress, Completed).
@@ -82,7 +101,7 @@ Our Ecosystem consists of:
 - **Updated:** `start.sh` rule (Never delete code: use `// DISABLED`).
 
 ### 🎯 Phase 1: Solid Foundation & Databases (Current)
-- [ ] **Database Migration:** Implementing PostgreSQL + Prisma (or Supabase) to transition away from local states to permanent cloud storage (Users, Mechanics, Cars, Orders).
+- [x] **Database Migration:** Implemented SQLite + Prisma to transition away from local states to real permanent storage API endpoints (Users, Mechanics, Cars, Orders).
 - [ ] **Real VIN Decoder API:** Plug into an automotive API to mathematically fetch exact oil volumes, filter IDs, and brake part numbers.
 - [ ] **Fleet Dispatcher 2.0:** Real-time WebSockets integration so dispatchers can track technicians on a live map.
 

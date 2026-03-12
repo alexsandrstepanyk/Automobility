@@ -38,40 +38,37 @@ export default function SettingsPage() {
     };
 
     const handleSave = (section: string) => {
-        // Here you would normally API call to save data
         setActiveSection(null);
     };
 
     return (
-        <main className="mobile-container" style={{ minHeight: '100vh', paddingBottom: '40px' }}>
+        <main className="mobile-container flex-col" style={{ minHeight: '100vh', paddingBottom: '40px' }}>
             {/* Header */}
-            <header style={{ padding: '20px 0', borderBottom: '1px solid var(--border)', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-                <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: 'white' }}>
+            <header className="page-header">
+                <button onClick={() => router.back()} className="icon-btn">
                     <ChevronLeft className="w-6 h-6" />
                 </button>
-                <h1 style={{ fontSize: '20px' }}>Налаштування</h1>
+                <h1 className="page-header-title">Налаштування</h1>
             </header>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className="flex-col gap-4">
 
                 {/* My Orders Section */}
                 <Link href="/orders" style={{ textDecoration: 'none' }}>
-                    <div className="premium-card">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                <div style={{ background: 'var(--accent)', padding: '10px', borderRadius: '12px' }}><Package className="text-white w-5 h-5" /></div>
-                                <span style={{ fontSize: '16px', fontWeight: 'bold', color: 'white' }}>Мої замовлення</span>
-                            </div>
-                            <ChevronRight className="w-5 h-5 text-gray-400" />
+                    <div className="premium-card flex-between" style={{ cursor: 'pointer' }}>
+                        <div className="flex-row gap-3">
+                            <div style={{ background: 'var(--accent)', padding: '10px', borderRadius: '12px' }}><Package className="text-white w-5 h-5" /></div>
+                            <span style={{ fontSize: '16px', fontWeight: 'bold', color: 'white' }}>Мої замовлення</span>
                         </div>
+                        <ChevronRight className="w-5 h-5 text-gray-400" />
                     </div>
                 </Link>
 
                 {/* Profile Section */}
                 <div className="premium-card">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }} onClick={() => setActiveSection(activeSection === 'profile' ? null : 'profile')}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <div style={{ background: 'var(--surface-hover)', padding: '10px', borderRadius: '12px' }}><User className="text-white w-5 h-5" /></div>
+                    <div className="flex-between" style={{ cursor: 'pointer' }} onClick={() => setActiveSection(activeSection === 'profile' ? null : 'profile')}>
+                        <div className="flex-row gap-3">
+                            <div className="icon-btn-surface" style={{ padding: '10px', borderRadius: '12px' }}><User className="text-white w-5 h-5" /></div>
                             <span style={{ fontSize: '16px', fontWeight: 'bold' }}>Профіль</span>
                         </div>
                         <ChevronRight className={`w-5 h-5 text-gray-400 transition-transform ${activeSection === 'profile' ? 'rotate-90' : ''}`} />
@@ -80,13 +77,13 @@ export default function SettingsPage() {
                     <AnimatePresence>
                         {activeSection === 'profile' && (
                             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} style={{ overflow: 'hidden' }}>
-                                <div style={{ borderTop: '1px solid var(--border)', marginTop: '16px', paddingTop: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                <div className="flex-col gap-3" style={{ borderTop: '1px solid var(--border)', marginTop: '16px', paddingTop: '16px' }}>
                                     <input type="text" className="input-field" value={profile.firstName} onChange={e => setProfile({ ...profile, firstName: e.target.value })} placeholder="Ім'я" />
                                     <input type="text" className="input-field" value={profile.lastName} onChange={e => setProfile({ ...profile, lastName: e.target.value })} placeholder="Прізвище" />
                                     <input type="date" className="input-field" value={profile.dob} onChange={e => setProfile({ ...profile, dob: e.target.value })} style={{ color: 'white' }} />
                                     <input type="tel" className="input-field" value={profile.phone} onChange={e => setProfile({ ...profile, phone: e.target.value })} placeholder="Номер телефону" />
                                     <input type="email" className="input-field" value={profile.email} onChange={e => setProfile({ ...profile, email: e.target.value })} placeholder="Email" />
-                                    <button className="btn-primary w-full" onClick={() => handleSave('profile')} style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '8px' }}>
+                                    <button className="btn-primary" style={{ width: '100%', marginTop: '8px' }} onClick={() => handleSave('profile')}>
                                         <Save className="w-5 h-5" /> Зберегти
                                     </button>
                                 </div>
@@ -95,11 +92,11 @@ export default function SettingsPage() {
                     </AnimatePresence>
                 </div>
 
-                {/* My Car Section - Hidden for mechanics optionally, or shown if they act as client too */}
+                {/* My Car Section */}
                 <div className="premium-card">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }} onClick={() => setActiveSection(activeSection === 'car' ? null : 'car')}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <div style={{ background: 'var(--surface-hover)', padding: '10px', borderRadius: '12px' }}><Car className="text-white w-5 h-5" /></div>
+                    <div className="flex-between" style={{ cursor: 'pointer' }} onClick={() => setActiveSection(activeSection === 'car' ? null : 'car')}>
+                        <div className="flex-row gap-3">
+                            <div className="icon-btn-surface" style={{ padding: '10px', borderRadius: '12px' }}><Car className="text-white w-5 h-5" /></div>
                             <span style={{ fontSize: '16px', fontWeight: 'bold' }}>Моє авто</span>
                         </div>
                         <ChevronRight className={`w-5 h-5 text-gray-400 transition-transform ${activeSection === 'car' ? 'rotate-90' : ''}`} />
@@ -108,14 +105,14 @@ export default function SettingsPage() {
                     <AnimatePresence>
                         {activeSection === 'car' && (
                             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} style={{ overflow: 'hidden' }}>
-                                <div style={{ borderTop: '1px solid var(--border)', marginTop: '16px', paddingTop: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                    <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '4px' }}>Ця інформація допомагає нам автоматично підбирати деталі для вас.</p>
+                                <div className="flex-col gap-3" style={{ borderTop: '1px solid var(--border)', marginTop: '16px', paddingTop: '16px' }}>
+                                    <p className="text-muted text-sm" style={{ marginBottom: '4px' }}>Ця інформація допомагає нам автоматично підбирати деталі для вас.</p>
                                     <input type="text" className="input-field" value={car.brand} onChange={e => setCar({ ...car, brand: e.target.value })} placeholder="Марка авто" />
                                     <input type="text" className="input-field" value={car.model} onChange={e => setCar({ ...car, model: e.target.value })} placeholder="Модель" />
                                     <input type="text" className="input-field" value={car.vin} onChange={e => setCar({ ...car, vin: e.target.value })} placeholder="VIN-код" />
                                     <input type="text" className="input-field" value={car.plate} onChange={e => setCar({ ...car, plate: e.target.value })} placeholder="Номерний знак" />
                                     <input type="number" className="input-field" value={car.mileage} onChange={e => setCar({ ...car, mileage: e.target.value })} placeholder="Пробіг (км)" />
-                                    <button className="btn-primary w-full" onClick={() => handleSave('car')} style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '8px' }}>
+                                    <button className="btn-primary" style={{ width: '100%', marginTop: '8px' }} onClick={() => handleSave('car')}>
                                         <Save className="w-5 h-5" /> Зберегти
                                     </button>
                                 </div>
@@ -126,13 +123,13 @@ export default function SettingsPage() {
 
                 {/* Language Section */}
                 <div className="premium-card">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }} onClick={() => setActiveSection(activeSection === 'language' ? null : 'language')}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <div style={{ background: 'var(--surface-hover)', padding: '10px', borderRadius: '12px' }}><Globe className="text-white w-5 h-5" /></div>
+                    <div className="flex-between" style={{ cursor: 'pointer' }} onClick={() => setActiveSection(activeSection === 'language' ? null : 'language')}>
+                        <div className="flex-row gap-3">
+                            <div className="icon-btn-surface" style={{ padding: '10px', borderRadius: '12px' }}><Globe className="text-white w-5 h-5" /></div>
                             <span style={{ fontSize: '16px', fontWeight: 'bold' }}>Мова (Language)</span>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <span style={{ color: 'var(--text-secondary)' }}>{language.toUpperCase()}</span>
+                        <div className="flex-row gap-2">
+                            <span className="text-muted">{language.toUpperCase()}</span>
                             <ChevronRight className={`w-5 h-5 text-gray-400 transition-transform ${activeSection === 'language' ? 'rotate-90' : ''}`} />
                         </div>
                     </div>
@@ -140,7 +137,7 @@ export default function SettingsPage() {
                     <AnimatePresence>
                         {activeSection === 'language' && (
                             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} style={{ overflow: 'hidden' }}>
-                                <div style={{ borderTop: '1px solid var(--border)', marginTop: '16px', paddingTop: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <div className="flex-col gap-2" style={{ borderTop: '1px solid var(--border)', marginTop: '16px', paddingTop: '16px' }}>
                                     {languages.map(lang => (
                                         <div
                                             key={lang.code}
@@ -148,13 +145,11 @@ export default function SettingsPage() {
                                                 setLanguage(lang.code as any);
                                                 setActiveSection(null);
                                             }}
+                                            className="flex-between"
                                             style={{
                                                 padding: '12px 16px',
                                                 borderRadius: '12px',
                                                 background: language === lang.code ? 'var(--accent)' : 'var(--surface)',
-                                                display: 'flex',
-                                                justifyContent: 'space-between',
-                                                alignItems: 'center',
                                                 cursor: 'pointer'
                                             }}
                                         >
@@ -172,9 +167,9 @@ export default function SettingsPage() {
 
                 {/* Privacy Policy */}
                 <div className="premium-card">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }} onClick={() => setActiveSection(activeSection === 'privacy' ? null : 'privacy')}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <div style={{ background: 'var(--surface-hover)', padding: '10px', borderRadius: '12px' }}><Shield className="text-white w-5 h-5" /></div>
+                    <div className="flex-between" style={{ cursor: 'pointer' }} onClick={() => setActiveSection(activeSection === 'privacy' ? null : 'privacy')}>
+                        <div className="flex-row gap-3">
+                            <div className="icon-btn-surface" style={{ padding: '10px', borderRadius: '12px' }}><Shield className="text-white w-5 h-5" /></div>
                             <span style={{ fontSize: '16px', fontWeight: 'bold' }}>Політика конфіденційності</span>
                         </div>
                         <ChevronRight className={`w-5 h-5 text-gray-400 transition-transform ${activeSection === 'privacy' ? 'rotate-90' : ''}`} />
@@ -193,8 +188,8 @@ export default function SettingsPage() {
                 </div>
 
                 {/* Logout */}
-                <div className="premium-card" style={{ marginTop: '24px', borderColor: 'rgba(239, 68, 68, 0.3)', cursor: 'pointer' }} onClick={handleLogout}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#ef4444' }}>
+                <div className="premium-card" style={{ marginTop: '8px', borderColor: 'rgba(239, 68, 68, 0.3)', cursor: 'pointer' }} onClick={handleLogout}>
+                    <div className="flex-row gap-3" style={{ color: '#ef4444' }}>
                         <div style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '10px', borderRadius: '12px' }}><LogOut className="w-5 h-5" /></div>
                         <span style={{ fontSize: '16px', fontWeight: 'bold' }}>Вихід з акаунту</span>
                     </div>

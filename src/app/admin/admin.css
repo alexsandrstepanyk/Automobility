@@ -1,0 +1,234 @@
+.admin-container {
+    min-height: 100vh;
+    background: var(--background);
+    padding: 24px;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.admin-header-title h1 {
+    font-size: 28px;
+}
+
+.admin-header-title p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.admin-tabs {
+    display: flex;
+    background: var(--surface);
+    padding: 4px;
+    border-radius: 12px;
+    margin-left: 20px;
+}
+
+.admin-tab {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    background: transparent;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.admin-tab.active {
+    background: var(--accent);
+}
+
+.admin-header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.live-badge {
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.stat-icon-wrapper {
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.stat-trend {
+    color: var(--accent);
+    font-size: 12px;
+    margin-left: auto;
+    background: none;
+    border: none;
+    font-weight: 700;
+}
+
+.admin-main-grid {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 24px;
+}
+
+@media (max-width: 1024px) {
+    .admin-main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.panel-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-wrapper {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 16px;
+    color: var(--text-secondary);
+}
+
+.search-input {
+    padding-left: 32px;
+    font-size: 14px;
+    width: 200px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    padding: 16px 20px;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.02);
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.admin-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+}
+
+.badge-pending {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    background: rgba(234, 179, 8, 0.1);
+    color: #eab308;
+}
+
+.badge-approved {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.mechanic-select {
+    color: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.verification-tabs {
+    display: flex;
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.verif-tab {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s ease;
+}
+
+.verif-tab.active {
+    color: var(--accent);
+}
+
+.verif-card {
+    padding: 16px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-reject {
+    border: none;
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-approve {
+    border: none;
+    background: var(--accent);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.fleet-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+}
+
+.fleet-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

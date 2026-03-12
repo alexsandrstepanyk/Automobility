@@ -194,11 +194,9 @@ export default function MechanicRegister() {
                             <p style={{ color: 'var(--text-secondary)', marginBottom: '40px' }}>
                                 Ми перевіримо ваші дані та зв&apos;яжемося з вами найближчим часом для активації аккаунту.
                             </p>
-                            <Link href="/">
-                                <button className="btn-primary w-full">
-                                    {t('backToHome')}
-                                </button>
-                            </Link>
+                            <button className="btn-primary w-full" onClick={() => window.location.href = '/'}>
+                                {t('backToHome')}
+                            </button>
                         </motion.div>
                     )}
                 </AnimatePresence>

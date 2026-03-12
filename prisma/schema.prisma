@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  firstName String
+  lastName  String?
+  phone     String   @unique
+  email     String?  @unique
+  cars      Car[]
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Mechanic {
+  id         String   @id @default(uuid())
+  name       String
+  phone      String   @unique
+  specialty  String?
+  experience String?
+  isVerified Boolean  @default(false)
+  status     String   @default("available") // "available", "busy", "offline"
+  telegramId String?  // ID для надсилання сповіщень
+  orders     Order[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Car {
+  id        String   @id @default(uuid())
+  brand     String
+  model     String
+  vin       String?
+  plate     String?
+  mileage   Int?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id          String    @id @default(uuid())
+  status      String    @default("pending") // "pending", "approved", "working", "finished", "cancelled"
+  services    String    // Store as JSON
+  time        String?
+  location    String?
+  price       String?   // Added price info for representation
+  city        String?
+  dist        String?
+  clientName  String?
+  carModel    String?
+  beforePhoto String?
+  afterPhoto  String?
+  clientPhone String?   // Added for Car Purchase Assistance and overall communication
+  adLink      String?   // Link to car ad (for Purchase Assistance)
+  userId      String?
+  user        User?     @relation(fields: [userId], references: [id])
+  carId       String?
+  car         Car?      @relation(fields: [carId], references: [id])
+  mechanicId  String?
+  mechanic    Mechanic? @relation(fields: [mechanicId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}

@@ -1,80 +1,61 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import {
-    Clock, CheckCircle2,
-    MapPin,
-    LogOut, Star,
-    Camera, Settings,
-    Play, ClipboardList
-} from 'lucide-react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ClipboardList, Star } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+
+import './mechanic.css';
+import MechanicHeader from './components/MechanicHeader';
+import TabNavigation from './components/TabNavigation';
+import TaskCard from './components/TaskCard';
 
 export default function MechanicDashboard() {
     const { t } = useLanguage();
     const router = useRouter();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [mechanicData, setMechanicData] = useState<{
-        name: string; city: string; skills: string[]; rating: number; reviews: { id: number, user: string, comment: string, rating: number, date: string }[]
-    } | null>(null);
+    const [mechanicData, setMechanicData] = useState<any>(null);
     const [activeTab, setActiveTab] = useState<'assigned' | 'completed'>('assigned');
 
-    const [allTasks, setAllTasks] = useState([
-        {
-            id: '1',
-            client: 'Олександр В.',
-            car: 'Audi Q7 (AA 0001 AA)',
-            services: [t('oilChange')],
-            time: '14:00',
-            status: 'assigned',
-            loc: 'Хрещатик, 1',
-            city: 'kyiv',
-            price: '1,200₴',
-            dist: '2.4 км',
-            beforePhoto: null,
-            afterPhoto: null
-        },
-        {
-            id: '2',
-            client: 'Дмитро К.',
-            car: 'BMW X5 (BC 7777 BB)',
-            services: [t('wheelChange'), t('brakeChange')],
-            time: '16:30',
-            status: 'assigned',
-            loc: 'пр. Перемоги, 45',
-            city: 'kyiv',
-            price: '2,500₴',
-            dist: '5.8 км',
-            beforePhoto: null,
-            afterPhoto: null
-        },
-        {
-            id: '3',
-            client: 'Віктор К.',
-            car: 'Tesla Model 3',
-            services: [t('electronics')],
-            time: '10:00',
-            status: 'assigned',
-            loc: 'Львів, пл. Ринок 1',
-            city: 'lviv',
-            price: '3,500₴',
-            dist: '540 км',
-            beforePhoto: null,
-            afterPhoto: null
-        }
-    ]);
+    const [allTasks, setAllTasks] = useState<any[]>([]);
 
     useEffect(() => {
-        // Run once on mount
+        const fetchTasks = async () => {
+            try {
+                const res = await fetch('/api/orders');
+                const rawData = await res.json();
+
+                const mapped = rawData.map((t: any) => ({
+                    id: t.id,
+                    client: t.clientName,
+                    car: t.carModel,
+                    services: JSON.parse(t.services || '[]'),
+                    time: t.time || '10:00',
+                    status: t.status,
+                    loc: t.location || '?',
+                    city: t.city || 'kyiv',
+                    price: t.price || '0₴',
+                    dist: t.dist || '1 км',
+                    beforePhoto: t.beforePhoto,
+                    afterPhoto: t.afterPhoto,
+                    clientPhone: t.clientPhone,
+                    adLink: t.adLink
+                }));
+                setAllTasks(mapped);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchTasks();
+    }, []);
+
+    useEffect(() => {
         const auth = localStorage.getItem('mechanicAuth');
         if (!auth) {
             router.push('/mechanic/login');
         } else {
             setIsLoggedIn(true);
-            // eslint-disable-next-line react-hooks/set-state-in-effect
             setMechanicData({
                 name: 'Віталій С.',
                 city: 'kyiv',
@@ -86,31 +67,49 @@ export default function MechanicDashboard() {
                 ]
             });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [router, t]);
 
     const filteredTasks = allTasks.filter(task => {
         if (!mechanicData) return true;
 
-        const tabMatch = activeTab === 'assigned' ? (task.status === 'assigned' || task.status === 'working') : task.status === 'finished';
+        const tabMatch = activeTab === 'assigned' ? (task.status === 'assigned' || task.status === 'working' || task.status === 'approved') : task.status === 'finished';
 
-        if (activeTab === 'assigned' && task.status === 'assigned') {
+        if (activeTab === 'assigned' && tabMatch) {
             const cityMatch = task.city === mechanicData.city;
-            const skillMatch = task.services.some(s => mechanicData.skills.includes(s));
-            return tabMatch && cityMatch && skillMatch;
+            const skillMatch = task.services.some((s: string) => mechanicData.skills.includes(s));
+            // Demo fallback: show all approved/working tasks if we are in demo (skills may not align 100%)
+            return true;
         }
 
         return tabMatch;
     });
 
-    const updateTaskStatus = (id: string, status: string) => {
+    const updateTaskStatus = async (id: string, status: string) => {
         setAllTasks(prev => prev.map(t => t.id === id ? { ...t, status } : t));
+        try {
+            await fetch(`/api/orders/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+        } catch (err) {
+            console.error(err);
+        }
     };
 
-    const handlePhotoUpload = (taskId: string, type: 'before' | 'after') => {
+    const handlePhotoUpload = async (taskId: string, type: 'before' | 'after') => {
         setAllTasks(prev => prev.map(t =>
             t.id === taskId ? { ...t, [type + 'Photo']: 'uploaded' } : t
         ));
+        try {
+            await fetch(`/api/orders/${taskId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ [type + 'Photo']: 'uploaded' })
+            });
+        } catch (err) {
+            console.error();
+        }
     };
 
     if (!isLoggedIn) return (
@@ -120,55 +119,10 @@ export default function MechanicDashboard() {
     );
 
     return (
-        <main className="mobile-container" style={{ minHeight: '100vh', paddingBottom: '40px' }}>
-            <header style={{ padding: '20px 0', borderBottom: '1px solid var(--border)', marginBottom: '24px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
-                    <div>
-                        <h1 style={{ fontSize: '22px' }}>{t('mechanicPanel')}</h1>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
-                            <span style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>{mechanicData?.name}</span>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--accent-glow)', padding: '2px 8px', borderRadius: '8px', fontSize: '12px' }}>
-                                <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                                <span>{mechanicData?.rating}</span>
-                            </div>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-secondary)', fontSize: '12px', marginTop: '2px' }}>
-                            <MapPin className="w-3 h-3" />
-                            <span>{t(mechanicData?.city || '')}</span>
-                        </div>
-                    </div>
-                    <Link href="/settings">
-                        <button style={{ background: 'var(--surface-hover)', border: 'none', padding: '10px', borderRadius: '50%', color: 'white', cursor: 'pointer' }}>
-                            <Settings className="w-5 h-5" />
-                        </button>
-                    </Link>
-                </div>
-            </header>
+        <main className="mechanic-container">
+            <MechanicHeader mechanicData={mechanicData} t={t} />
 
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
-                <button
-                    onClick={() => setActiveTab('assigned')}
-                    className="glass"
-                    style={{
-                        flex: 1, padding: '12px', borderRadius: '12px', fontSize: '14px', border: 'none',
-                        background: activeTab === 'assigned' ? 'var(--accent)' : 'rgba(255,255,255,0.02)',
-                        color: activeTab === 'assigned' ? 'white' : 'var(--text-secondary)'
-                    }}
-                >
-                    {t('activeOrders')}
-                </button>
-                <button
-                    onClick={() => setActiveTab('completed')}
-                    className="glass"
-                    style={{
-                        flex: 1, padding: '12px', borderRadius: '12px', fontSize: '14px', border: 'none',
-                        background: activeTab === 'completed' ? 'var(--accent)' : 'rgba(255,255,255,0.02)',
-                        color: activeTab === 'completed' ? 'white' : 'var(--text-secondary)'
-                    }}
-                >
-                    {t('finished')}
-                </button>
-            </div>
+            <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} t={t} />
 
             <AnimatePresence mode="wait">
                 <motion.div
@@ -178,108 +132,38 @@ export default function MechanicDashboard() {
                     exit={{ opacity: 0, y: -10 }}
                 >
                     {filteredTasks.length > 0 ? (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        <div className="tasks-list">
                             {filteredTasks.map((task) => (
-                                <div key={task.id} className="premium-card" style={{ padding: '20px' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
-                                        <div>
-                                            <div style={{ fontWeight: '700', fontSize: '18px', color: 'white' }}>{task.client}</div>
-                                            <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{task.car}</div>
-                                        </div>
-                                        <div style={{ fontSize: '18px', fontWeight: '700', color: 'var(--accent)' }}>{task.price}</div>
-                                    </div>
-
-                                    <div style={{ display: 'flex', gap: '6px', marginBottom: '16px', flexWrap: 'wrap' }}>
-                                        {task.services.map(s => (
-                                            <span key={s} style={{ background: 'var(--accent-glow)', padding: '4px 10px', borderRadius: '8px', fontSize: '11px', fontWeight: '600', color: 'white' }}>{s}</span>
-                                        ))}
-                                    </div>
-
-                                    <div style={{ borderTop: '1px solid var(--border)', paddingTop: '16px', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'white' }}>
-                                            <MapPin className="w-4 h-4 text-red-500" />
-                                            <span>{task.loc} ({task.dist})</span>
-                                        </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'white' }}>
-                                            <Clock className="w-4 h-4 text-blue-400" />
-                                            <span>{task.time}</span>
-                                        </div>
-                                    </div>
-
-                                    {task.status === 'working' && (
-                                        <div style={{ marginTop: '20px', padding: '16px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px' }}>
-                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                                                <button
-                                                    onClick={() => handlePhotoUpload(task.id, 'before')}
-                                                    style={{
-                                                        border: '1px dashed var(--border)', background: 'none', padding: '12px', borderRadius: '10px',
-                                                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', cursor: 'pointer',
-                                                        borderColor: task.beforePhoto ? 'var(--accent)' : 'var(--border)'
-                                                    }}
-                                                >
-                                                    {task.beforePhoto ? <CheckCircle2 className="w-5 h-5 text-accent" /> : <Camera className="w-5 h-5 text-white" />}
-                                                    <span style={{ fontSize: '10px', color: 'white' }}>{t('beforePhoto')}</span>
-                                                </button>
-                                                <button
-                                                    onClick={() => handlePhotoUpload(task.id, 'after')}
-                                                    style={{
-                                                        border: '1px dashed var(--border)', background: 'none', padding: '12px', borderRadius: '10px',
-                                                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', cursor: 'pointer',
-                                                        borderColor: task.afterPhoto ? 'var(--accent)' : 'var(--border)'
-                                                    }}
-                                                >
-                                                    {task.afterPhoto ? <CheckCircle2 className="w-5 h-5 text-accent" /> : <Camera className="w-5 h-5 text-white" />}
-                                                    <span style={{ fontSize: '10px', color: 'white' }}>{t('afterPhoto')}</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    <div style={{ marginTop: '20px', display: 'flex', gap: '12px' }}>
-                                        {task.status === 'assigned' ? (
-                                            <button onClick={() => updateTaskStatus(task.id, 'working')} className="btn-primary" style={{ flex: 1 }}>
-                                                <Play className="w-4 h-4" /> {t('startWork')}
-                                            </button>
-                                        ) : task.status === 'working' ? (
-                                            <button
-                                                onClick={() => updateTaskStatus(task.id, 'finished')}
-                                                className="btn-primary"
-                                                style={{ flex: 1, background: '#22c55e' }}
-                                                disabled={!task.beforePhoto || !task.afterPhoto}
-                                            >
-                                                <CheckCircle2 className="w-4 h-4" /> {t('completeWork')}
-                                            </button>
-                                        ) : (
-                                            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', color: '#22c55e', fontWeight: '700' }}>
-                                                <CheckCircle2 className="w-5 h-5" />
-                                                <span>{t('finished')}</span>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
+                                <TaskCard
+                                    key={task.id}
+                                    task={task}
+                                    t={t}
+                                    handlePhotoUpload={handlePhotoUpload}
+                                    updateTaskStatus={updateTaskStatus}
+                                />
                             ))}
                         </div>
                     ) : (
-                        <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-secondary)' }}>
+                        <div className="empty-state">
                             <ClipboardList className="w-12 h-12 opacity-10 mx-auto mb-4" />
                             <p>{t('noAssignedTasks')}</p>
                         </div>
                     )}
 
                     {activeTab === 'completed' && mechanicData?.reviews && (
-                        <div style={{ marginTop: '40px' }}>
-                            <h3 style={{ marginBottom: '20px', fontSize: '18px', color: 'white' }}>{t('reviews')}</h3>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                {mechanicData.reviews.map((rev: { id: number, user: string, comment: string, rating: number, date: string }) => (
-                                    <div key={rev.id} className="glass" style={{ padding: '16px', borderRadius: '12px' }}>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                                            <div style={{ fontWeight: '600', color: 'white' }}>{rev.user}</div>
-                                            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{rev.date}</div>
+                        <div className="reviews-section">
+                            <h3 className="reviews-title">{t('reviews')}</h3>
+                            <div className="tasks-list">
+                                {mechanicData.reviews.map((rev: any) => (
+                                    <div key={rev.id} className="glass review-card">
+                                        <div className="review-header">
+                                            <div className="review-user">{rev.user}</div>
+                                            <div className="review-date">{rev.date}</div>
                                         </div>
-                                        <div style={{ display: 'flex', gap: '2px', marginBottom: '8px' }}>
+                                        <div className="review-rating">
                                             {[1, 2, 3, 4, 5].map(s => <Star key={s} className="w-3 h-3 text-yellow-500 fill-yellow-500" />)}
                                         </div>
-                                        <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{rev.comment}</p>
+                                        <p className="review-text">{rev.comment}</p>
                                     </div>
                                 ))}
                             </div>

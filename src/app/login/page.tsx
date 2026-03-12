@@ -41,11 +41,15 @@ export default function Login() {
                     </div>
 
                     <div style={{ marginTop: '40px' }}>
-                        <Link href="/dashboard">
-                            <button className="btn-primary w-full">
-                                Увійти <ChevronRight className="w-5 h-5" />
-                            </button>
-                        </Link>
+                        <button
+                            className="btn-primary w-full"
+                            onClick={() => {
+                                localStorage.setItem('clientAuth', 'true');
+                                window.location.href = '/';
+                            }}
+                        >
+                            Увійти <ChevronRight className="w-5 h-5" />
+                        </button>
                     </div>
 
                     <p style={{ textAlign: 'center', marginTop: '24px', color: 'var(--text-secondary)', fontSize: '14px' }}>

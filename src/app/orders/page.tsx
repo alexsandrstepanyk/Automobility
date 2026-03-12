@@ -21,58 +21,43 @@ export default function OrdersPage() {
     const filteredOrders = orders.filter(o => o.status === activeTab);
 
     return (
-        <main className="mobile-container" style={{ minHeight: '100vh', paddingBottom: '40px' }}>
+        <main className="mobile-container flex-col" style={{ minHeight: '100vh', paddingBottom: '40px' }}>
             {/* Header */}
-            <header style={{ padding: '20px 0', borderBottom: '1px solid var(--border)', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-                <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: 'white' }}>
+            <header className="page-header">
+                <button onClick={() => router.back()} className="icon-btn">
                     <ChevronLeft className="w-6 h-6" />
                 </button>
-                <h1 style={{ fontSize: '20px' }}>Мої замовлення</h1>
+                <h1 className="page-header-title">Мої замовлення</h1>
             </header>
 
             {/* Tabs */}
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
+            <div className="tabs-wrapper">
                 <button
                     onClick={() => setActiveTab('new')}
-                    className="glass"
-                    style={{
-                        flex: 1, padding: '12px', borderRadius: '12px', fontSize: '13px', border: 'none',
-                        background: activeTab === 'new' ? 'var(--accent)' : 'var(--surface)',
-                        color: activeTab === 'new' ? 'white' : 'var(--text-secondary)'
-                    }}
+                    className={`glass tab-item ${activeTab === 'new' ? 'active' : 'inactive'}`}
                 >
                     Нові
                 </button>
                 <button
                     onClick={() => setActiveTab('progress')}
-                    className="glass"
-                    style={{
-                        flex: 1, padding: '12px', borderRadius: '12px', fontSize: '13px', border: 'none',
-                        background: activeTab === 'progress' ? 'var(--accent)' : 'var(--surface)',
-                        color: activeTab === 'progress' ? 'white' : 'var(--text-secondary)'
-                    }}
+                    className={`glass tab-item ${activeTab === 'progress' ? 'active' : 'inactive'}`}
                 >
                     В процесі
                 </button>
                 <button
                     onClick={() => setActiveTab('completed')}
-                    className="glass"
-                    style={{
-                        flex: 1, padding: '12px', borderRadius: '12px', fontSize: '13px', border: 'none',
-                        background: activeTab === 'completed' ? 'var(--accent)' : 'var(--surface)',
-                        color: activeTab === 'completed' ? 'white' : 'var(--text-secondary)'
-                    }}
+                    className={`glass tab-item ${activeTab === 'completed' ? 'active' : 'inactive'}`}
                 >
                     Виконані
                 </button>
             </div>
 
             {/* Content */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div className="flex-col gap-3">
                 <AnimatePresence mode="popLayout">
                     {filteredOrders.length === 0 ? (
-                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text-secondary)' }}>
-                            <Package className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-col flex-center text-muted" style={{ padding: '40px 20px' }}>
+                            <Package className="w-12 h-12 mb-4 opacity-50" />
                             <p>У цій категорії немає замовлень.</p>
                         </motion.div>
                     ) : (
@@ -85,16 +70,16 @@ export default function OrdersPage() {
                                 exit={{ opacity: 0, scale: 0.9 }}
                                 className="premium-card"
                             >
-                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                                    <span style={{ color: 'var(--text-secondary)', fontSize: '12px' }}>Замовлення #{order.id}</span>
+                                <div className="flex-between" style={{ marginBottom: '12px' }}>
+                                    <span className="text-muted text-sm">Замовлення #{order.id}</span>
                                     <span style={{ color: 'white', fontSize: '12px', fontWeight: 'bold' }}>{order.date}</span>
                                 </div>
                                 <div style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px' }}>{order.title}</div>
-                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                    <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{order.loc}</span>
+                                <div className="flex-between">
+                                    <span className="text-muted text-md">{order.loc}</span>
                                     <span style={{ color: 'var(--accent)', fontWeight: 'bold' }}>{order.price}</span>
                                 </div>
-                                <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <div className="flex-row gap-2" style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
                                     {order.status === 'new' && <Package className="w-4 h-4 text-blue-400" />}
                                     {order.status === 'progress' && <Clock className="w-4 h-4 text-yellow-400" />}
                                     {order.status === 'completed' && <CheckCircle className="w-4 h-4 text-green-400" />}

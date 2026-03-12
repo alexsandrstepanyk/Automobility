@@ -1,0 +1,271 @@
+.mechanic-container {
+    min-height: 100vh;
+    background: var(--background);
+    padding: 24px;
+    max-width: 480px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+
+.mechanic-header {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+}
+
+.mechanic-header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.mechanic-title {
+    font-size: 22px;
+}
+
+.mechanic-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.mechanic-name {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.rating-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--accent-glow);
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.location-info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.settings-btn {
+    background: var(--surface-hover);
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.settings-btn:hover {
+    background: var(--surface);
+}
+
+.tabs-container {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    border: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.tab-btn.active {
+    background: var(--accent);
+    color: white;
+}
+
+.tab-btn.inactive {
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-secondary);
+}
+
+.tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.task-card {
+    padding: 20px;
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.client-name {
+    font-weight: 700;
+    font-size: 18px;
+    color: white;
+}
+
+.client-car {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.task-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.services-list {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.service-badge {
+    background: var(--accent-glow);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+}
+
+.task-details {
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+}
+
+.photo-upload-container {
+    margin-top: 20px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.upload-btn {
+    border: 1px dashed var(--border);
+    background: none;
+    padding: 12px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.upload-btn.uploaded {
+    border-color: var(--accent);
+}
+
+.upload-label {
+    font-size: 10px;
+    color: white;
+}
+
+.task-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
+}
+
+.btn-start {
+    flex: 1;
+}
+
+.btn-complete {
+    flex: 1;
+    background: #22c55e;
+}
+
+.btn-complete:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.status-finished {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    color: #22c55e;
+    font-weight: 700;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+}
+
+.reviews-section {
+    margin-top: 40px;
+}
+
+.reviews-title {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: white;
+}
+
+.review-card {
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.review-user {
+    font-weight: 600;
+    color: white;
+}
+
+.review-date {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.review-rating {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 8px;
+}
+
+.review-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
