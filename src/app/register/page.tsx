@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Car, User, Phone, Mail, ChevronRight, ChevronLeft, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
@@ -20,6 +20,29 @@ export default function Register() {
         carModel: '',
         plate: ''
     });
+
+    const [brands, setBrands] = useState<string[]>([]);
+    const [models, setModels] = useState<string[]>([]);
+    const [showBrandSuggestions, setShowBrandSuggestions] = useState(false);
+    const [showModelSuggestions, setShowModelSuggestions] = useState(false);
+
+    // Fetch brands on mount
+    useEffect(() => {
+        fetch('/api/cars/catalog')
+            .then(res => res.json())
+            .then(data => setBrands(Array.isArray(data) ? data : []))
+            .catch(err => console.error('Failed to fetch brands', err));
+    }, []);
+
+    // Fetch models when brand changes
+    const handleBrandSelect = (brand: string) => {
+        setFormData({ ...formData, carMake: brand, carModel: '' });
+        setShowBrandSuggestions(false);
+        fetch(`/api/cars/catalog?brand=${encodeURIComponent(brand)}`)
+            .then(res => res.json())
+            .then(data => setModels(Array.isArray(data) ? data : []))
+            .catch(err => console.error('Failed to fetch models', err));
+    };
 
     const languages: { code: Language; name: string; flag: string }[] = [
         { code: 'uk', name: 'Українська', flag: '🇺🇦' },
@@ -191,16 +214,62 @@ export default function Register() {
                                         className="input-field"
                                         style={{ paddingLeft: '48px' }}
                                         value={formData.carMake}
-                                        onChange={(e) => setFormData({ ...formData, carMake: e.target.value })}
+                                        onChange={(e) => {
+                                            setFormData({ ...formData, carMake: e.target.value });
+                                            setShowBrandSuggestions(true);
+                                        }}
+                                        onFocus={() => setShowBrandSuggestions(true)}
                                     />
+                                    {showBrandSuggestions && formData.carMake && (
+                                        <div className="premium-card" style={{ position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 100, maxHeight: '200px', overflowY: 'auto', marginTop: '4px', padding: '8px' }}>
+                                            {brands.filter(b => b.toLowerCase().includes(formData.carMake.toLowerCase())).map(brand => (
+                                                <div
+                                                    key={brand}
+                                                    onClick={() => handleBrandSelect(brand)}
+                                                    style={{ padding: '12px', cursor: 'pointer', borderBottom: '1px solid var(--border)' }}
+                                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--surface-hover)'}
+                                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                                                >
+                                                    {brand}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
-                                <input
-                                    type="text"
-                                    placeholder={t('carModel')}
-                                    className="input-field"
-                                    value={formData.carModel}
-                                    onChange={(e) => setFormData({ ...formData, carModel: e.target.value })}
-                                />
+
+                                <div style={{ position: 'relative' }}>
+                                    <input
+                                        type="text"
+                                        placeholder={t('carModel')}
+                                        className="input-field"
+                                        value={formData.carModel}
+                                        onChange={(e) => {
+                                            setFormData({ ...formData, carModel: e.target.value });
+                                            setShowModelSuggestions(true);
+                                        }}
+                                        disabled={!formData.carMake}
+                                        onFocus={() => setShowModelSuggestions(true)}
+                                    />
+                                    {showModelSuggestions && formData.carModel && models.length > 0 && (
+                                        <div className="premium-card" style={{ position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 100, maxHeight: '200px', overflowY: 'auto', marginTop: '4px', padding: '8px' }}>
+                                            {models.filter(m => m.toLowerCase().includes(formData.carModel.toLowerCase())).map(model => (
+                                                <div
+                                                    key={model}
+                                                    onClick={() => {
+                                                        setFormData({ ...formData, carModel: model });
+                                                        setShowModelSuggestions(false);
+                                                    }}
+                                                    style={{ padding: '12px', cursor: 'pointer', borderBottom: '1px solid var(--border)' }}
+                                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--surface-hover)'}
+                                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                                                >
+                                                    {model}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+
                                 <input
                                     type="text"
                                     placeholder={t('platePlace')}

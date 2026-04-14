@@ -1,0 +1,1 @@
+import { createClient } from '@libsql/client'; const client = createClient({ url: 'file:/Users/apple/Desktop/Automobility/dev.db' }); client.execute('SELECT 1').then(() => console.log('OK')).catch(console.error);

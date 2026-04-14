@@ -78,6 +78,16 @@
 
 ### 📜 Історія змін (Changelog)
 
+## 2026-04-14 v1.4.0 - Мобільний Додаток та Розумний Сервіс
+- Додано: Повноцінний мобільний додаток на **Expo SDK 52**.
+- Додано: Екран налаштувань та кабінет користувача у мобільній версії.
+- Додано: **Система "Розумний Помічник"** — автоматичний розрахунок ТО (масло, КПП, редуктори) на основі пробігу.
+- Додано: Підтримка технічних характеристик: VIN, Тип приводу (AWD/RWD/FWD), Тип коробки.
+- Додано: Глобальний стан (AuthContext) для синхронізації профілю та авто між екранами.
+- Оновлено: Скрипт `start.sh` тепер підтримує одночасний запуск Веб-порталу та Мобільного додатка.
+
+---
+
 ## 2026-03-12 v1.3.0 - Інтеграція Бекенду та Бази Даних
 - Додано: Локальна база даних SQLite та ORM Prisma V7.
 - Додано: API-ендпоїнти `/api/orders`, `/api/mechanics`.
@@ -108,45 +118,55 @@ Traditional auto repair shops require clients to spend hours scheduling, driving
 
 ### 🌟 Core Modules
 
-1. **📱 Client App (User Hub)**
+1. **📱 Native Mobile App (Expo SDK 52)**
+   - Smart Service Assistant: Automated maintenance reminders for engine oil, gearbox, and differentials.
+   - Global Garage Management: Multi-vehicle support with technical specs (AWD/RWD, VIN).
+   - Real-time profile synchronization via AuthContext.
+
+2. **💻 Web Client App (User Hub)**
    - Seamless onboarding and garage building.
    - Interactive booking flows with logic (e.g., matching brake pads dynamically).
    - Real-time order tracking (`/orders`).
-   - Global Settings (`/settings`) with instant multi-language toggling (no reloads).
-   - Premium Dark Glassmorphism aesthetics.
 
-2. **🔧 Mechanic Dashboard**
+3. **🔧 Mechanic Dashboard**
    - Task management portal (`/mechanic`) tailored for field workers.
    - Order acceptance, navigation, and photo-report uploading.
-   - Personal rating tracking.
 
-3. **⚙️ Core: Admin & Dispatcher Panel**
+4. **⚙️ Core: Admin & Dispatcher Panel**
    - The company's central nervous system (`/admin`).
    - Live queue monitoring, mechanic dispatch, and staff verification.
-   - Business & financial analytics.
 
 ### 🛠 Tech Stack
-- **Framework**: [Next.js 15](https://nextjs.org/) (App Router, highly optimized for SSR/CSR).
-- **Styling**: Vanilla CSS (Custom premium tokens, no bloated frameworks).
-- **Animations**: [Framer Motion](https://www.framer.com/motion/).
-- **Icons**: Lucide React.
-- **Language & Logic**: TypeScript, native React Hooks, Global Context.
-- **QA/Testing**: [Playwright](https://playwright.dev/) for E2E testing.
-- **Database (Planned):** PostgreSQL with Prisma ORM (currently operating on local state logic for prototyping).
+- **Framework**: [Next.js 15](https://nextjs.org/) (Web) + [Expo SDK 52](https://expo.dev/) (Mobile).
+- **Styling**: Vanilla CSS (Web) + StyleSheet (Mobile).
+- **Animations**: [Framer Motion](https://www.framer.com/motion/) & [Moti](https://moti.framer.com/).
+- **Icons**: Lucide React / Lucide React Native.
+- **Database**: SQLite with Prisma ORM V7.
 
-### ⚡️ How to run
+### 📂 Structure
+- `/src/*` - Web Application.
+- `/mobile/*` - Native Mobile Application.
+- `/prisma/*` - Database Schema & Migrations.
 
-1. Install dependencies:
+### ⚡️ How to run (Universally)
+
+1. Install all dependencies:
    ```bash
-   npm install
+   npm install && cd mobile && npm install && cd ..
    ```
-2. Run the server (must use `start.sh` script to enforce strict port 1999 rules):
+2. Run everything:
    ```bash
    ./start.sh
    ```
-3. Open [http://localhost:1999](http://localhost:1999)
+3. Web: [http://localhost:1999](http://localhost:1999) | Mobile: Expo Go (via console QR code).
 
 ### 📜 Changelog
+
+## 2026-04-14 v1.4.0 - Mobile Launch & Smart Service
+- Added: Full Mobile App implementation on Expo SDK 52.
+- Added: Smart Maintenance Assistant with rule-based advisors.
+- Added: AWD/RWD differential oil tracking logic.
+- Updated: Universal `start.sh` for simultaneous Web & Mobile development.
 
 ## 2026-03-07 v1.2.0 - Interactive Services & Profiles
 - Added: Settings page (`/settings`) and client profile.

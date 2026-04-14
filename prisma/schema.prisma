@@ -12,10 +12,10 @@ model User {
   lastName  String?
   phone     String   @unique
   email     String?  @unique
-  cars      Car[]
-  orders    Order[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  cars      Car[]
+  orders    Order[]
 }
 
 model Mechanic {
@@ -25,48 +25,68 @@ model Mechanic {
   specialty  String?
   experience String?
   isVerified Boolean  @default(false)
-  status     String   @default("available") // "available", "busy", "offline"
-  telegramId String?  // ID для надсилання сповіщень
-  orders     Order[]
+  status     String   @default("available")
+  telegramId String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  orders     Order[]
 }
 
 model Car {
-  id        String   @id @default(uuid())
-  brand     String
-  model     String
-  vin       String?
-  plate     String?
-  mileage   Int?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  orders    Order[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                        String    @id @default(uuid())
+  brand                     String
+  model                     String
+  vin                       String?
+  plate                     String?
+  year                      Int?
+  fuelType                  String?
+  gearboxType               String?
+  mileage                   Int?
+  lastOilChangeDate         DateTime?
+  lastOilChangeMileage      Int?
+  lastGearboxServiceMileage Int?
+  lastDiffServiceMileage    Int?
+  userId                    String
+  createdAt                 DateTime  @default(now())
+  updatedAt                 DateTime  @updatedAt
+  user                      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders                    Order[]
 }
 
 model Order {
   id          String    @id @default(uuid())
-  status      String    @default("pending") // "pending", "approved", "working", "finished", "cancelled"
-  services    String    // Store as JSON
+  status      String    @default("pending")
+  services    String
   time        String?
   location    String?
-  price       String?   // Added price info for representation
+  price       String?
   city        String?
   dist        String?
   clientName  String?
   carModel    String?
   beforePhoto String?
   afterPhoto  String?
-  clientPhone String?   // Added for Car Purchase Assistance and overall communication
-  adLink      String?   // Link to car ad (for Purchase Assistance)
   userId      String?
-  user        User?     @relation(fields: [userId], references: [id])
   carId       String?
-  car         Car?      @relation(fields: [carId], references: [id])
   mechanicId  String?
-  mechanic    Mechanic? @relation(fields: [mechanicId], references: [id])
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  adLink      String?
+  clientPhone String?
+  mechanic    Mechanic? @relation(fields: [mechanicId], references: [id])
+  car         Car?      @relation(fields: [carId], references: [id])
+  user        User?     @relation(fields: [userId], references: [id])
+}
+
+model CarCatalog {
+  id        String   @id @default(uuid())
+  brand     String
+  model     String
+  yearFrom  Int?
+  yearTo    Int?
+  category  String?
+  createdAt DateTime @default(now())
+
+  @@index([brand])
+  @@index([model])
 }
